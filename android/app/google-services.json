@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "908512595830",
+    "firebase_url": "https://hello-ad80f.firebaseio.com",
+    "project_id": "hello-ad80f",
+    "storage_bucket": "hello-ad80f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:908512595830:android:f4742f361cdce79708f457",
+        "android_client_info": {
+          "package_name": "com.example.flutter_googlemaps"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "908512595830-mefntasvtab42qjf8efc66eef688l1ev.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCGe0O3WjZfNgMbvP7FU2QwLxIJqc02N-4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "908512595830-mefntasvtab42qjf8efc66eef688l1ev.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

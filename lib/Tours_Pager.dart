@@ -3,11 +3,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_googlemaps/main.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'map.dart';
 
 class Tours_List extends StatefulWidget {
-  final String size;
-  const Tours_List({Key key, this.size}) : super(key: key);
+  final GeoPoint route;
+  const Tours_List({Key key, this.route}) : super(key: key);
+
   createState() => TourListState();
 }
 
@@ -29,7 +31,7 @@ class TourListState extends State<Tours_List> {
         children: [
           Text(
             'Themes',
-            style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+            style: TextStyle(color:Colors.black,fontSize: 40, fontWeight: FontWeight.bold),
             textAlign: TextAlign.left,
           ),
           Container(
@@ -42,7 +44,7 @@ class TourListState extends State<Tours_List> {
               ),
               Text(
                 'FILTER',
-                style: TextStyle(color: Colors.black26),
+                style: TextStyle(color: Colors.black26,fontSize: 20,fontWeight: FontWeight.normal),
                 textAlign: TextAlign.center,
               ),
             ],
@@ -65,7 +67,7 @@ class TourListState extends State<Tours_List> {
         child: AnimatedContainer(
       duration: Duration(milliseconds: 500),
       curve: Curves.easeOutQuint,
-      margin: EdgeInsets.only(top: top, bottom: 100, right: 10, left: 10),
+      margin: EdgeInsets.only(top: 150, bottom: 50, right: 10, left: 10),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(25),
         image: DecorationImage(
@@ -88,11 +90,11 @@ class TourListState extends State<Tours_List> {
             height: 100,
           ),
           Align(
-            alignment: Alignment.bottomLeft,
+            alignment: Alignment.center,
             child: Text(
               snap.data.documents[index]['name'],
-              style: TextStyle(fontSize: 30, color: Colors.white),
-              textAlign: TextAlign.left,
+              style: TextStyle(fontSize: 30, color: Colors.black,fontStyle: FontStyle.italic),
+              textAlign: TextAlign.center,
             ),
           ),
         ],
@@ -101,7 +103,7 @@ class TourListState extends State<Tours_List> {
    onTap: () {
         Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => Myhi(
+            MaterialPageRoute(builder: (context) => Myhi(id: 1,center:LatLng(30, 30)
              
             ))
         );
@@ -111,7 +113,7 @@ class TourListState extends State<Tours_List> {
 
   @override
   void initState() {
-    Back = Color.fromRGBO(225, 186, 107, 1);
+    Back =Color.fromRGBO(225, 186, 107, 1);
     queryDatabase();
     controller.addListener(() {
       int next = controller.page.round();
@@ -124,15 +126,15 @@ class TourListState extends State<Tours_List> {
     super.initState();
   }
 
-  void queryDatabase({String theme = 'favourites'}) {
+  void queryDatabase({String themes = 'favourites'}) {
     Query query =
-        database.collection('tours').where('themes', arrayContains: theme);
+        database.collection('tours').where('themes', arrayContains: themes);
     // Map the slides to the data payload
     tours =
         query.snapshots().map((list) => list.documents.map((doc) => doc.data));
     // Update the active tag
     setState(() {
-      activeTag = theme;
+      activeTag = themes;
     });
   }
 
@@ -145,15 +147,15 @@ class TourListState extends State<Tours_List> {
       themes_list.add(FlatButton(
           color: color,
           child: SizedBox(
-            width: 60,
+            width: 200,
             child: Text(
               '#' + themes[i],
-              style: TextStyle(),
+              style: TextStyle(fontWeight: FontWeight.bold,fontSize:20, fontStyle: FontStyle.italic),
               textAlign: TextAlign.left,
             ),
           ),
           onPressed: () {
-           queryDatabase(theme: themes[i]);
+           queryDatabase(themes: themes[i]);
             activeTag = themes[i];
 
            
@@ -171,7 +173,7 @@ class TourListState extends State<Tours_List> {
   Widget build(
     BuildContext context,
   ) {
-    return MaterialApp(
+    return MaterialApp(debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: Stack(children: [
           BuildBackground(),
@@ -202,13 +204,14 @@ class TourListState extends State<Tours_List> {
   Widget BuildBackground() {
     return Scaffold(
         body: Container(
-      color: Back,
+        color: Back,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
-          Image.asset(
-            'images_and_icons/gawlah.png',
+          
+            Image.asset(
+            'assets/gawlah.png',
             height: 100,
           ),
           Container(

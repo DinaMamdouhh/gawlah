@@ -6,11 +6,31 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'Tours_Pager.dart';
 
 class Myhi extends StatefulWidget {
+  const Myhi({Key key, this.id, this.center, this.route}) : super(key: key);
+
   _MyAppState createState() => _MyAppState();
+  final int id;
+  final LatLng center;
+  final List<LatLng>route;
+
+  int getid(){
+    return id;
+  }
+ 
+  LatLng getcenter(){
+    return center;
+  }
+
+  List<LatLng> getroute(){
+
+    return route;
+  }
+
+
 }
-
-
 class _MyAppState extends State<Myhi> {
+  _MyAppState({this.passedValue});
+  final String passedValue;
  
 bool isLoading = false;
 String errorMessage;
@@ -88,14 +108,16 @@ String errorMessage;
             StreamBuilder<Object>(
               stream: Firestore.instance.collection('tours').snapshots(),
               builder: (context, AsyncSnapshot snapshot) {
-                return GoogleMap(
-                  myLocationEnabled: true,
-                  myLocationButtonEnabled: true,
-                  onMapCreated: _onMapCreated,
-                  initialCameraPosition: CameraPosition(
-                    target: LatLng(29.9565261, 31.2703018),
+                
+                                return GoogleMap(
+                                  myLocationEnabled: true,
+                                  myLocationButtonEnabled: true,
+                                  onMapCreated: _onMapCreated,
+                                  initialCameraPosition: CameraPosition(
+                                    target:widget.center,
                     zoom: 10.0,
                   ),);},),
+                
           ],
                 ),
             )

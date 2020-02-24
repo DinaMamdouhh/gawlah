@@ -79,15 +79,6 @@ class _MyAppState extends State<Myhi> {
     });
   }
 
-  // searchandNavigate() {
-  //   Geolocator().placemarkFromAddress(searchAddr).then((result) {
-  //     _mapcontroller.animateCamera(CameraUpdate.newCameraPosition(
-  //         CameraPosition(
-  //             target: LatLng(
-  //                 result[0].position.latitude, result[0].position.longitude),
-  //             zoom: 10.0)));
-  //   });
-  // }
 
   void _onCameraMove(CameraPosition position) {
     _lastMapPosition = position.target;
@@ -168,14 +159,15 @@ class _MyAppState extends State<Myhi> {
 
   Polyline GetRouteFromDb(List<dynamic> points, id )
   {
-    List<LatLng> points_list;
+    List<GeoPoint> points_list = points.map((point) => point as GeoPoint).toList();  
+    List<LatLng> points_list_Latlng;
    
-    points.forEach((point) => 
+    points_list.forEach((point) => 
     {
-      points_list.add(LatLng( (point as GeoPoint ).latitude, (point as GeoPoint ).longitude))
+      points_list_Latlng.add(LatLng( (point as GeoPoint ).latitude, (point as GeoPoint ).longitude))
     }
     );
-     Polyline(polylineId:PolylineId(id.toString()) ,points: points_list);
+     Polyline(polylineId:PolylineId(id.toString()) ,points: points_list_Latlng);
 
         
     

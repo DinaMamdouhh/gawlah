@@ -1,10 +1,13 @@
 import 'dart:collection';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_googlemaps/main.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'map.dart';
+import 'dart:developer';
 
 class Tours_List extends StatefulWidget {
   final GeoPoint route;
@@ -22,6 +25,7 @@ class TourListState extends State<Tours_List> {
   String activeTag = 'all';
   int currentPage = 0;
   TourListState();
+
 
   Container BuildThemesPage(BuildContext context, List themes) {
     return Container(
@@ -54,6 +58,19 @@ class TourListState extends State<Tours_List> {
       ),
     );
   }
+
+
+
+
+
+
+
+
+
+
+
+
+  
 
   GestureDetector BuildTourPage(
       bool active, int index, BuildContext context, AsyncSnapshot snap) {
@@ -101,11 +118,18 @@ class TourListState extends State<Tours_List> {
       ),
     ),
    onTap: () {
+    
         Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => Myhi(id: 1,center:LatLng(30, 30)
-             
-            ))
+            MaterialPageRoute(builder: (context) => Myhi(id: snap.data.documents[index]['id'],
+            center:LatLng((snap.data.documents[index]['center2']),(snap.data.documents[index]['center3']),),
+            route:LatLng((snap.data.documents[index]['route00']),(snap.data.documents[index]['route01']),),
+             route1: LatLng((snap.data.documents[index]['route10']),(snap.data.documents[index]['route11']),),
+             route2:LatLng((snap.data.documents[index]['route20']),(snap.data.documents[index]['route21']),),
+             route3: LatLng((snap.data.documents[index]['route30']),(snap.data.documents[index]['route31']),),
+             route4:LatLng((snap.data.documents[index]['route40']),(snap.data.documents[index]['route41']),),
+            )
+            )
         );
       },
     );
@@ -236,6 +260,32 @@ class TourListState extends State<Tours_List> {
     }
     return themes;
   }
+
+
+List route_getter(AsyncSnapshot snapshot) {
+    List route = new List();
+
+    for (int i = 0; i < snapshot.data.documents.length; i++) {
+      List routes = snapshot.data.documents[i]['route'];
+
+      routes.forEach((element) {
+        if (!(route.contains(element))) {
+          route.add(element);
+          //log('route: $route');
+        }
+      });
+    }
+    return route;
+    
+    
+  }
+
+
+
+
+
+
+
 
   void _onPageViewChange(int page) {}
 }

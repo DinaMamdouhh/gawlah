@@ -27,19 +27,20 @@ class Myhi extends StatefulWidget {
     properties.add(IntProperty('id', id));
   }
 
-  // List<LatLng> getroute(){
 
-  //   return route;
-  // }
 
 }
 
 class _MyAppState extends State<Myhi> {
+  Polyline route;
   Completer<GoogleMapController> _mapcontroller = Completer();
 
   @override
   void initState() {
+    route = GetRouteFromDb(widget.route, widget.id);
     super.initState();
+    
+
   }
 
   _MyAppState({this.passedValue});
@@ -47,9 +48,7 @@ class _MyAppState extends State<Myhi> {
 
   bool isLoading = false;
   String errorMessage;
-//final Set<Polyline> polyline={};
-//List<LatLng>routecoords;
-//GoogleMapPolyline googleMapPolyline=new GoogleMapPolyline(apiKey: "AIzaSyBPDbF9SG2qPGN_nS57lSYhXmdnR-ksx04");
+
 
   static const _intialPositionn = LatLng(29.9565261, 31.2703018);
   LatLng _lastMapPosition = _intialPositionn;
@@ -88,16 +87,6 @@ class _MyAppState extends State<Myhi> {
     setState(() {
       _mapcontroller.complete(controller);
 
-      // _markers.add(Marker(
-      //   // This marker id can be anything that uniquely identifies each marker.
-      //   markerId: MarkerId(_lastMapPosition.toString()),
-      //   position: widget.center,
-      //   infoWindow: InfoWindow(
-      //     title: 'Kahert_El_Mouaz',
-      //     snippet: 'Here Starts Your Tour',
-      //   ),
-      //   icon: BitmapDescriptor.defaultMarker,
-      // ));
     });
   }
 
@@ -136,7 +125,7 @@ class _MyAppState extends State<Myhi> {
                     ),
                     polylines: Set<Polyline>.of(
                       <Polyline>[
-                        GetRouteFromDb(widget.route, widget.id)
+                        route
 
 
                       ]

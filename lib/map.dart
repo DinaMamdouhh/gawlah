@@ -192,7 +192,6 @@ class _MyAppState extends State<Myhi> {
 
   getPoints() {
     return [
-      //widget.center,
       widget.route,
       widget.route1,
       widget.route2,
@@ -200,4 +199,23 @@ class _MyAppState extends State<Myhi> {
       widget.route4,
     ];
   }
+
+
+  Polyline GetRouteFromDb(List<dynamic> points, String id )
+  {
+    List<LatLng> points_list;
+   
+    points.forEach((point) => 
+    {
+      points_list.add(LatLng( (point as GeoPoint ).latitude, (point as GeoPoint ).longitude))
+    }
+    );
+     Polyline(polylineId:PolylineId(id) ,points: points_list);
+
+        
+    
+      }
+    }
+    
+    class ( {
 }

@@ -18,12 +18,12 @@ class Myhi extends StatefulWidget {
   _MyAppState createState() => _MyAppState();
   final int id;
   final LatLng center;
-  final List<GeoPoint> route;
+  final List<dynamic> route;
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(IterableProperty<GeoPoint>('route', route));
+    properties.add(IterableProperty<dynamic>('route', route));
     properties.add(IntProperty('id', id));
   }
 

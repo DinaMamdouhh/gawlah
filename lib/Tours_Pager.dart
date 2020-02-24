@@ -259,23 +259,7 @@ class TourListState extends State<Tours_List> {
   }
 
 
-List route_getter(AsyncSnapshot snapshot) {
-    List route = new List();
 
-    for (int i = 0; i < snapshot.data.documents.length; i++) {
-      List routes = snapshot.data.documents[i]['route'];
-
-      routes.forEach((element) {
-        if (!(route.contains(element))) {
-          route.add(element);
-          //log('route: $route');
-        }
-      });
-    }
-    return route;
-    
-    
-  }
 
 
 

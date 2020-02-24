@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -10,25 +11,20 @@ class Myhi extends StatefulWidget {
   const Myhi(
       {Key key,
       this.id,
-      this.center,
-      this.route,
-      this.route1,
-      this.route2,
-      this.route3,
-      this.route4})
+      this.center, this.route,
+      })
       : super(key: key);
 
   _MyAppState createState() => _MyAppState();
   final int id;
   final LatLng center;
-  final LatLng route;
-  final LatLng route1;
-  final LatLng route2;
-  final LatLng route3;
-  final LatLng route4;
+  final List<LatLng> route;
 
-  int getid() {
-    return id;
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(IterableProperty<LatLng>('route', route));
+    properties.add(IntProperty('id', id));
   }
 
   // List<LatLng> getroute(){
@@ -139,7 +135,7 @@ class _MyAppState extends State<Myhi> {
                       <Polygon>[
                         Polygon(
                             polygonId: PolygonId('area'),
-                            points: getPoints(),
+                            
                             geodesic: true,
                             strokeColor: Colors.red.withOpacity(0.6),
                             strokeWidth: 2,
@@ -147,40 +143,17 @@ class _MyAppState extends State<Myhi> {
                             visible: true),
                       ],
                     ),
-                    markers: {
-                      Marker(
-                        markerId: MarkerId('place1'),
-                        position: widget.route,
-                        infoWindow: InfoWindow(title: 'place1'),
-                        icon: BitmapDescriptor.defaultMarkerWithHue(
-                          BitmapDescriptor.hueViolet,
-                        ),
-                      ),
-                      Marker(
-                        markerId: MarkerId('place2'),
-                        position: widget.route2,
-                        infoWindow: InfoWindow(title: 'Place2'),
-                        icon: BitmapDescriptor.defaultMarkerWithHue(
-                          BitmapDescriptor.hueViolet,
-                        ),
-                      ),
-                      Marker(
-                        markerId: MarkerId('place3'),
-                        position: widget.route3,
-                        infoWindow: InfoWindow(title: 'Place3'),
-                        icon: BitmapDescriptor.defaultMarkerWithHue(
-                          BitmapDescriptor.hueViolet,
-                        ),
-                      ),
-                      Marker(
-                        markerId: MarkerId('place4'),
-                        position: widget.route4,
-                        infoWindow: InfoWindow(title: 'Place4'),
-                        icon: BitmapDescriptor.defaultMarkerWithHue(
-                          BitmapDescriptor.hueViolet,
-                        ),
-                      ),
-                    },
+                    polylines: Set<Polyline>.of(
+                      <Polyline>[
+                        GetRouteFromDb(widget.route, widget.id)
+
+
+                      ]
+
+
+
+                    ),
+                   
                   );
                 },
               ),
@@ -190,18 +163,10 @@ class _MyAppState extends State<Myhi> {
         ));
   }
 
-  getPoints() {
-    return [
-      widget.route,
-      widget.route1,
-      widget.route2,
-      widget.route3,
-      widget.route4,
-    ];
-  }
 
 
-  Polyline GetRouteFromDb(List<dynamic> points, String id )
+
+  Polyline GetRouteFromDb(List<dynamic> points, id )
   {
     List<LatLng> points_list;
    
@@ -210,12 +175,11 @@ class _MyAppState extends State<Myhi> {
       points_list.add(LatLng( (point as GeoPoint ).latitude, (point as GeoPoint ).longitude))
     }
     );
-     Polyline(polylineId:PolylineId(id) ,points: points_list);
+     Polyline(polylineId:PolylineId(id.toString()) ,points: points_list);
 
         
     
       }
     }
     
-    class ( {
-}
+

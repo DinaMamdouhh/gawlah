@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart' as LocationManager;
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'Tours_Pager.dart';
 import 'dart:async';
 
@@ -60,7 +59,7 @@ class _MyAppState extends State<Myhi> {
   LatLng _lastMapPosition = _intialPositionn;
   final Set<Marker> _markers = {};
 
-  MapType _currentMapType = MapType.normal;
+  MapType _currentMapType = MapType.satellite;
 
   void _onMapTypeButtonPressed() {
     setState(() {

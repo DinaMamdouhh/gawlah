@@ -18,12 +18,12 @@ class Myhi extends StatefulWidget {
   _MyAppState createState() => _MyAppState();
   final int id;
   final LatLng center;
-  final List<LatLng> route;
+  final List<GeoPoint> route;
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(IterableProperty<LatLng>('route', route));
+    properties.add(IterableProperty<GeoPoint>('route', route));
     properties.add(IntProperty('id', id));
   }
 
@@ -159,17 +159,19 @@ class _MyAppState extends State<Myhi> {
 
   Polyline GetRouteFromDb(List<dynamic> points, id )
   {
-    List<GeoPoint> points_list = points.map((point) => point as GeoPoint).toList();  
-    List<LatLng> points_list_Latlng;
-   
-    points_list.forEach((point) => 
+   List<LatLng> latlngs = new List();
+    points.forEach((point)
     {
-      points_list_Latlng.add(LatLng( (point as GeoPoint ).latitude, (point as GeoPoint ).longitude))
+      latlngs.add(new LatLng((point as GeoPoint).latitude, (point as GeoPoint).longitude));
     }
     );
-     Polyline(polylineId:PolylineId(id.toString()) ,points: points_list_Latlng);
 
-        
+    return
+      new Polyline(
+    consumeTapEvents: false,polylineId: PolylineId(id),    
+    visible: true,
+    points: latlngs,
+    );
     
       }
     }

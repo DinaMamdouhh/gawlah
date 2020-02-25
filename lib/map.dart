@@ -156,7 +156,7 @@ class _MyAppState extends State<Myhi> {
     );
   }
 
-  Widget _boxes(String _image, double lat, double long, String restaurantName) {
+  Widget _boxes(String _image, double lat, double long, String name) {
     return GestureDetector(
       onTap: () {
         _gotoLocation(lat, long);
@@ -185,7 +185,7 @@ class _MyAppState extends State<Myhi> {
                   Container(
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: myDetailsContainer1(restaurantName),
+                      child: myDetailsContainer1(name),
                     ),
                   ),
                 ],
@@ -195,8 +195,8 @@ class _MyAppState extends State<Myhi> {
     );
   }
 
-  Widget myDetailsContainer1(String restaurantName) {
-    if(restaurantName=="Al-Azhar Mosque"){
+  Widget myDetailsContainer1(String name) {
+    if(name=="Al-Azhar Mosque"){
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
@@ -204,7 +204,7 @@ class _MyAppState extends State<Myhi> {
           padding: const EdgeInsets.only(left: 8.0),
           child: Container(
               child: Text(
-            restaurantName,
+            name,
             style: TextStyle(
                 color: Color(0xff6200ee),
                 fontSize: 24.0,
@@ -290,7 +290,7 @@ class _MyAppState extends State<Myhi> {
       ],
     );
   }
- else if(restaurantName=="Qalawun complex"){
+ else if(name=="Qalawun complex"){
 return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
@@ -298,7 +298,7 @@ return Column(
           padding: const EdgeInsets.only(left: 8.0),
           child: Container(
               child: Text(
-            restaurantName,
+            name,
             style: TextStyle(
                 color: Color(0xff6200ee),
                 fontSize: 24.0,
@@ -385,7 +385,7 @@ return Column(
     );
   
  }
- else if(restaurantName=="Bayt Al-Suhaymi"){
+ else if(name=="Bayt Al-Suhaymi"){
 return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
@@ -393,7 +393,7 @@ return Column(
           padding: const EdgeInsets.only(left: 8.0),
           child: Container(
               child: Text(
-            restaurantName,
+            name,
             style: TextStyle(
                 color: Color(0xff6200ee),
                 fontSize: 24.0,

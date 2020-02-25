@@ -26,7 +26,6 @@ class TourListState extends State<Tours_List> {
   int currentPage = 0;
   TourListState();
 
-
   Container BuildThemesPage(BuildContext context, List themes) {
     return Container(
       child: Column(
@@ -35,7 +34,8 @@ class TourListState extends State<Tours_List> {
         children: [
           Text(
             'Themes',
-            style: TextStyle(color:Colors.black,fontSize: 40, fontWeight: FontWeight.bold),
+            style: TextStyle(
+                color: Colors.black, fontSize: 40, fontWeight: FontWeight.bold),
             textAlign: TextAlign.left,
           ),
           Container(
@@ -48,7 +48,10 @@ class TourListState extends State<Tours_List> {
               ),
               Text(
                 'FILTER',
-                style: TextStyle(color: Colors.black26,fontSize: 20,fontWeight: FontWeight.normal),
+                style: TextStyle(
+                    color: Colors.black26,
+                    fontSize: 20,
+                    fontWeight: FontWeight.normal),
                 textAlign: TextAlign.center,
               ),
             ],
@@ -59,19 +62,6 @@ class TourListState extends State<Tours_List> {
     );
   }
 
-
-
-
-
-
-
-
-
-
-
-
-  
-
   GestureDetector BuildTourPage(
       bool active, int index, BuildContext context, AsyncSnapshot snap) {
     // Animated properties
@@ -80,61 +70,63 @@ class TourListState extends State<Tours_List> {
     final double top = active ? 200 : 240;
 
     return GestureDetector(
-      
-        child: AnimatedContainer(
-      duration: Duration(milliseconds: 500),
-      curve: Curves.easeOutQuint,
-      margin: EdgeInsets.only(top: 150, bottom: 50, right: 10, left: 10),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(25),
-        image: DecorationImage(
-          fit: BoxFit.cover,
-          image: NetworkImage(snap.data.documents[index]['image']),
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black87,
-            blurRadius: blur,
-            offset: Offset(offset, offset),
+      child: AnimatedContainer(
+        duration: Duration(milliseconds: 500),
+        curve: Curves.easeOutQuint,
+        margin: EdgeInsets.only(top: 150, bottom: 50, right: 10, left: 10),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(25),
+          image: DecorationImage(
+            fit: BoxFit.cover,
+            image: NetworkImage(snap.data.documents[index]['image']),
           ),
-        ],
-      ),
-      
-    
-      child: Column(
-        children: [
-          Container(
-            height: 100,
-          ),
-          Align(
-            alignment: Alignment.center,
-            child: Text(
-              snap.data.documents[index]['name'],
-              style: TextStyle(fontSize: 30, color: Colors.black,fontStyle: FontStyle.italic),
-              textAlign: TextAlign.center,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black87,
+              blurRadius: blur,
+              offset: Offset(offset, offset),
             ),
-          ),
-        ],
+          ],
+        ),
+        child: Column(
+          children: [
+            Container(
+              height: 100,
+            ),
+            Align(
+              alignment: Alignment.center,
+              child: Text(
+                snap.data.documents[index]['name'],
+                style: TextStyle(
+                    fontSize: 30,
+                    color: Colors.black,
+                    fontStyle: FontStyle.italic),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ],
+        ),
       ),
-    ),
-   onTap: () {
-    
+      onTap: () {
         Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => Myhi(id: snap.data.documents[index]['id'],
-            center:LatLng((snap.data.documents[index]['center'] as GeoPoint).latitude,(snap.data.documents[index]['center'] as GeoPoint).longitude),
-            tour:snap.data.documents[index],
-             
-            )
-            )
-        );
+            MaterialPageRoute(
+                builder: (context) => Myhi(
+                      id: snap.data.documents[index]['id'],
+                      center: LatLng(
+                          (snap.data.documents[index]['center'] as GeoPoint)
+                              .latitude,
+                          (snap.data.documents[index]['center'] as GeoPoint)
+                              .longitude),
+                      tour: snap.data.documents[index],
+                    )));
       },
     );
   }
 
   @override
   void initState() {
-    Back =Color.fromRGBO(225, 186, 107, 1);
+    Back = Color.fromRGBO(225, 186, 107, 1);
     queryDatabase();
     controller.addListener(() {
       int next = controller.page.round();
@@ -145,7 +137,6 @@ class TourListState extends State<Tours_List> {
       }
     });
     super.initState();
-
   }
 
   void queryDatabase({String themes = 'favourites'}) {
@@ -172,30 +163,27 @@ class TourListState extends State<Tours_List> {
             width: 200,
             child: Text(
               '#' + themes[i],
-              style: TextStyle(fontWeight: FontWeight.bold,fontSize:20, fontStyle: FontStyle.italic),
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                  fontStyle: FontStyle.italic),
               textAlign: TextAlign.left,
             ),
           ),
           onPressed: () {
-           queryDatabase(themes: themes[i]);
+            queryDatabase(themes: themes[i]);
             activeTag = themes[i];
-
-           
-          }
-          ));
+          }));
     }
-    return new 
-     Column(
-        crossAxisAlignment: CrossAxisAlignment.start, 
-        children: themes_list);
-        
-        
+    return new Column(
+        crossAxisAlignment: CrossAxisAlignment.start, children: themes_list);
   }
 
   Widget build(
     BuildContext context,
   ) {
-    return MaterialApp(debugShowCheckedModeBanner: false,
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: Stack(children: [
           BuildBackground(),
@@ -226,13 +214,12 @@ class TourListState extends State<Tours_List> {
   Widget BuildBackground() {
     return Scaffold(
         body: Container(
-        color: Back,
+      color: Back,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
-          
-            Image.asset(
+          Image.asset(
             'assets/gawlah.png',
             height: 100,
           ),
@@ -258,16 +245,6 @@ class TourListState extends State<Tours_List> {
     }
     return themes;
   }
-
-
-
-
-
-
-
-
-
-
 
   void _onPageViewChange(int page) {}
 }

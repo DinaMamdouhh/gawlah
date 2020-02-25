@@ -145,7 +145,7 @@ class TourListState extends State<Tours_List> {
     // Map the slides to the data payload
     tours =
         query.snapshots().map((list) => list.documents.map((doc) => doc.data));
-    // Update the active tag
+    
     setState(() {
       activeTag = themes;
     });
@@ -188,7 +188,7 @@ class TourListState extends State<Tours_List> {
         body: Stack(children: [
           BuildBackground(),
           StreamBuilder<QuerySnapshot>(
-              stream: database.collection('tours').snapshots(),
+              stream: tours,
               builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                 return PageView.builder(
                     controller: controller,

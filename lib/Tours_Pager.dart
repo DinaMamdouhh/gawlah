@@ -123,7 +123,7 @@ class TourListState extends State<Tours_List> {
             context,
             MaterialPageRoute(builder: (context) => Myhi(id: snap.data.documents[index]['id'],
             center:LatLng((snap.data.documents[index]['center'] as GeoPoint).latitude,(snap.data.documents[index]['center'] as GeoPoint).longitude),
-            route:snap.data.documents[index]
+            tour:snap.data.documents[index],
              
             )
             )

@@ -11,21 +11,16 @@ class Myhi extends StatefulWidget {
   const Myhi(
       {Key key,
       this.id,
-      this.center, this.route,
+      this.center,
+      this.tour
       })
       : super(key: key);
 
   _MyAppState createState() => _MyAppState();
   final int id;
   final LatLng center;
-  final List<dynamic> route;
+  final Map tour;
 
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(IterableProperty<dynamic>('route', route));
-    properties.add(IntProperty('id', id));
-  }
 
 
 
@@ -37,7 +32,6 @@ class _MyAppState extends State<Myhi> {
 
   @override
   void initState() {
-    route = GetRouteFromDb(widget.route, widget.id);
     super.initState();
     
 
@@ -125,7 +119,7 @@ class _MyAppState extends State<Myhi> {
                     ),
                     polylines: Set<Polyline>.of(
                       <Polyline>[
-                        route
+                        GetRouteFromDb(widget.tour, widget.id)
 
 
                       ]
@@ -146,12 +140,14 @@ class _MyAppState extends State<Myhi> {
 
 
 
-  Polyline GetRouteFromDb(List<dynamic> points, id )
+  Polyline GetRouteFromDb(Map tour, id )
   {
+   List<dynamic> points = tour['route'].tolist();
    List<LatLng> latlngs = new List();
+
     points.forEach((point)
     {
-      latlngs.add(new LatLng((point as GeoPoint).latitude, (point as GeoPoint).longitude));
+      latlngs.add(new LatLng(point, point));
     }
     );
 

@@ -114,7 +114,8 @@ class _MyAppState extends State<Myhi> {
       // ));
     });
   }
-   Widget _buildContainer() {
+
+  Widget _buildContainer() {
     return Align(
       alignment: Alignment.bottomLeft,
       child: Container(
@@ -160,6 +161,23 @@ class _MyAppState extends State<Myhi> {
     return GestureDetector(
       onTap: () {
         _gotoLocation(lat, long);
+        LatLng newpoint=LatLng(lat,long);
+        setState(() {
+      _markers.add(Marker(
+          // This marker id can be anything that uniquely identifies each marker.
+          markerId: MarkerId("place5"),
+          position: newpoint,
+          infoWindow: InfoWindow(
+            title: 'Really cool place',
+            snippet: '5 Star Rating',
+          ),
+          icon: BitmapDescriptor.defaultMarkerWithHue(
+                          BitmapDescriptor.hueViolet),
+          
+          
+          )
+          );
+    });
       },
       child: Container(
         child: new FittedBox(
@@ -196,296 +214,287 @@ class _MyAppState extends State<Myhi> {
   }
 
   Widget myDetailsContainer1(String name) {
-    if(name=="Al-Azhar Mosque"){
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.only(left: 8.0),
-          child: Container(
-              child: Text(
-            name,
-            style: TextStyle(
-                color: Color(0xff6200ee),
-                fontSize: 24.0,
-                fontWeight: FontWeight.bold),
-          )),
-        ),
-        SizedBox(height: 5.0),
-        Container(
-            child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            Container(
+    if (name == "Al-Azhar Mosque") {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(left: 8.0),
+            child: Container(
                 child: Text(
-              "4.8",
+              name,
               style: TextStyle(
-                color: Colors.black54,
-                fontSize: 18.0,
-              ),
+                  color: Color(0xff6200ee),
+                  fontSize: 24.0,
+                  fontWeight: FontWeight.bold),
             )),
-            Container(
-              child: Icon(
-                FontAwesomeIcons.solidStar,
-                color: Colors.amber,
-                size: 15.0,
-              ),
-            ),
-            Container(
-              child: Icon(
-                FontAwesomeIcons.solidStar,
-                color: Colors.amber,
-                size: 15.0,
-              ),
-            ),
-            Container(
-              child: Icon(
-                FontAwesomeIcons.solidStar,
-                color: Colors.amber,
-                size: 15.0,
-              ),
-            ),
-            Container(
-              child: Icon(
-                FontAwesomeIcons.solidStar,
-                color: Colors.amber,
-                size: 15.0,
-              ),
-            ),
-            Container(
-              child: Icon(
-                FontAwesomeIcons.solidStarHalf,
-                color: Colors.amber,
-                size: 15.0,
-              ),
-            ),
-            Container(
-                child: Text(
-              "(972)",
-              style: TextStyle(
-                color: Colors.black54,
-                fontSize: 18.0,
-              ),
-            )),
-          ],
-        )),
-        SizedBox(height: 5.0),
-        Container(
-            child: Text(
-          "Mosque",
-          style: TextStyle(
-            color: Colors.black54,
-            fontSize: 18.0,
           ),
-        )),
-        SizedBox(height: 5.0),
-        Container(
-            child: Text(
-          "Opened",
-          style: TextStyle(
+          SizedBox(height: 5.0),
+          Container(
+              child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Container(
+                  child: Text(
+                "4.8",
+                style: TextStyle(
+                  color: Colors.black54,
+                  fontSize: 18.0,
+                ),
+              )),
+              Container(
+                child: Icon(
+                  FontAwesomeIcons.solidStar,
+                  color: Colors.amber,
+                  size: 15.0,
+                ),
+              ),
+              Container(
+                child: Icon(
+                  FontAwesomeIcons.solidStar,
+                  color: Colors.amber,
+                  size: 15.0,
+                ),
+              ),
+              Container(
+                child: Icon(
+                  FontAwesomeIcons.solidStar,
+                  color: Colors.amber,
+                  size: 15.0,
+                ),
+              ),
+              Container(
+                child: Icon(
+                  FontAwesomeIcons.solidStar,
+                  color: Colors.amber,
+                  size: 15.0,
+                ),
+              ),
+              Container(
+                child: Icon(
+                  FontAwesomeIcons.solidStarHalf,
+                  color: Colors.amber,
+                  size: 15.0,
+                ),
+              ),
+              Container(
+                  child: Text(
+                "(972)",
+                style: TextStyle(
+                  color: Colors.black54,
+                  fontSize: 18.0,
+                ),
+              )),
+            ],
+          )),
+          SizedBox(height: 5.0),
+          Container(
+              child: Text(
+            "Mosque",
+            style: TextStyle(
               color: Colors.black54,
               fontSize: 18.0,
-              fontWeight: FontWeight.bold),
-        )),
-      ],
-    );
+            ),
+          )),
+          SizedBox(height: 5.0),
+          Container(
+              child: Text(
+            "Opened",
+            style: TextStyle(
+                color: Colors.black54,
+                fontSize: 18.0,
+                fontWeight: FontWeight.bold),
+          )),
+        ],
+      );
+    } else if (name == "Qalawun complex") {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(left: 8.0),
+            child: Container(
+                child: Text(
+              name,
+              style: TextStyle(
+                  color: Color(0xff6200ee),
+                  fontSize: 24.0,
+                  fontWeight: FontWeight.bold),
+            )),
+          ),
+          SizedBox(height: 5.0),
+          Container(
+              child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Container(
+                  child: Text(
+                "4.8",
+                style: TextStyle(
+                  color: Colors.black54,
+                  fontSize: 18.0,
+                ),
+              )),
+              Container(
+                child: Icon(
+                  FontAwesomeIcons.solidStar,
+                  color: Colors.amber,
+                  size: 15.0,
+                ),
+              ),
+              Container(
+                child: Icon(
+                  FontAwesomeIcons.solidStar,
+                  color: Colors.amber,
+                  size: 15.0,
+                ),
+              ),
+              Container(
+                child: Icon(
+                  FontAwesomeIcons.solidStar,
+                  color: Colors.amber,
+                  size: 15.0,
+                ),
+              ),
+              Container(
+                child: Icon(
+                  FontAwesomeIcons.solidStar,
+                  color: Colors.amber,
+                  size: 15.0,
+                ),
+              ),
+              Container(
+                child: Icon(
+                  FontAwesomeIcons.solidStarHalf,
+                  color: Colors.amber,
+                  size: 15.0,
+                ),
+              ),
+              Container(
+                  child: Text(
+                "(972)",
+                style: TextStyle(
+                  color: Colors.black54,
+                  fontSize: 18.0,
+                ),
+              )),
+            ],
+          )),
+          SizedBox(height: 5.0),
+          Container(
+              child: Text(
+            "Mosque of Complex",
+            style: TextStyle(
+              color: Colors.black54,
+              fontSize: 18.0,
+            ),
+          )),
+          SizedBox(height: 5.0),
+          Container(
+              child: Text(
+            "Opened",
+            style: TextStyle(
+                color: Colors.black54,
+                fontSize: 18.0,
+                fontWeight: FontWeight.bold),
+          )),
+        ],
+      );
+    } else if (name == "Bayt Al-Suhaymi") {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(left: 8.0),
+            child: Container(
+                child: Text(
+              name,
+              style: TextStyle(
+                  color: Color(0xff6200ee),
+                  fontSize: 24.0,
+                  fontWeight: FontWeight.bold),
+            )),
+          ),
+          SizedBox(height: 5.0),
+          Container(
+              child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Container(
+                  child: Text(
+                "4.2",
+                style: TextStyle(
+                  color: Colors.black54,
+                  fontSize: 18.0,
+                ),
+              )),
+              Container(
+                child: Icon(
+                  FontAwesomeIcons.solidStar,
+                  color: Colors.amber,
+                  size: 15.0,
+                ),
+              ),
+              Container(
+                child: Icon(
+                  FontAwesomeIcons.solidStar,
+                  color: Colors.amber,
+                  size: 15.0,
+                ),
+              ),
+              Container(
+                child: Icon(
+                  FontAwesomeIcons.solidStar,
+                  color: Colors.amber,
+                  size: 15.0,
+                ),
+              ),
+              Container(
+                child: Icon(
+                  FontAwesomeIcons.solidStar,
+                  color: Colors.amber,
+                  size: 15.0,
+                ),
+              ),
+              Container(
+                child: Icon(
+                  FontAwesomeIcons.solidStarHalf,
+                  color: Colors.amber,
+                  size: 15.0,
+                ),
+              ),
+              Container(
+                  child: Text(
+                "(972)",
+                style: TextStyle(
+                  color: Colors.black54,
+                  fontSize: 18.0,
+                ),
+              )),
+            ],
+          )),
+          SizedBox(height: 5.0),
+          Container(
+              child: Text(
+            "Bayt Al-Suhaymi Islamic House",
+            style: TextStyle(
+              color: Colors.black54,
+              fontSize: 18.0,
+            ),
+          )),
+          SizedBox(height: 5.0),
+          Container(
+              child: Text(
+            "Opened",
+            style: TextStyle(
+                color: Colors.black54,
+                fontSize: 18.0,
+                fontWeight: FontWeight.bold),
+          )),
+        ],
+      );
+    }
   }
- else if(name=="Qalawun complex"){
-return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.only(left: 8.0),
-          child: Container(
-              child: Text(
-            name,
-            style: TextStyle(
-                color: Color(0xff6200ee),
-                fontSize: 24.0,
-                fontWeight: FontWeight.bold),
-          )),
-        ),
-        SizedBox(height: 5.0),
-        Container(
-            child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            Container(
-                child: Text(
-              "4.8",
-              style: TextStyle(
-                color: Colors.black54,
-                fontSize: 18.0,
-              ),
-            )),
-            Container(
-              child: Icon(
-                FontAwesomeIcons.solidStar,
-                color: Colors.amber,
-                size: 15.0,
-              ),
-            ),
-            Container(
-              child: Icon(
-                FontAwesomeIcons.solidStar,
-                color: Colors.amber,
-                size: 15.0,
-              ),
-            ),
-            Container(
-              child: Icon(
-                FontAwesomeIcons.solidStar,
-                color: Colors.amber,
-                size: 15.0,
-              ),
-            ),
-            Container(
-              child: Icon(
-                FontAwesomeIcons.solidStar,
-                color: Colors.amber,
-                size: 15.0,
-              ),
-            ),
-            Container(
-              child: Icon(
-                FontAwesomeIcons.solidStarHalf,
-                color: Colors.amber,
-                size: 15.0,
-              ),
-            ),
-            Container(
-                child: Text(
-              "(972)",
-              style: TextStyle(
-                color: Colors.black54,
-                fontSize: 18.0,
-              ),
-            )),
-          ],
-        )),
-        SizedBox(height: 5.0),
-        Container(
-            child: Text(
-          "Mosque of Complex",
-          style: TextStyle(
-            color: Colors.black54,
-            fontSize: 18.0,
-          ),
-        )),
-        SizedBox(height: 5.0),
-        Container(
-            child: Text(
-          "Opened",
-          style: TextStyle(
-              color: Colors.black54,
-              fontSize: 18.0,
-              fontWeight: FontWeight.bold),
-        )),
-      ],
-    );
-  
- }
- else if(name=="Bayt Al-Suhaymi"){
-return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.only(left: 8.0),
-          child: Container(
-              child: Text(
-            name,
-            style: TextStyle(
-                color: Color(0xff6200ee),
-                fontSize: 24.0,
-                fontWeight: FontWeight.bold),
-          )),
-        ),
-        SizedBox(height: 5.0),
-        Container(
-            child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            Container(
-                child: Text(
-              "4.2",
-              style: TextStyle(
-                color: Colors.black54,
-                fontSize: 18.0,
-              ),
-            )),
-            Container(
-              child: Icon(
-                FontAwesomeIcons.solidStar,
-                color: Colors.amber,
-                size: 15.0,
-              ),
-            ),
-            Container(
-              child: Icon(
-                FontAwesomeIcons.solidStar,
-                color: Colors.amber,
-                size: 15.0,
-              ),
-            ),
-            Container(
-              child: Icon(
-                FontAwesomeIcons.solidStar,
-                color: Colors.amber,
-                size: 15.0,
-              ),
-            ),
-            Container(
-              child: Icon(
-                FontAwesomeIcons.solidStar,
-                color: Colors.amber,
-                size: 15.0,
-              ),
-            ),
-            Container(
-              child: Icon(
-                FontAwesomeIcons.solidStarHalf,
-                color: Colors.amber,
-                size: 15.0,
-              ),
-            ),
-            Container(
-                child: Text(
-              "(972)",
-              style: TextStyle(
-                color: Colors.black54,
-                fontSize: 18.0,
-              ),
-            )),
-          ],
-        )),
-        SizedBox(height: 5.0),
-        Container(
-            child: Text(
-          "Bayt Al-Suhaymi Islamic House",
-          style: TextStyle(
-            color: Colors.black54,
-            fontSize: 18.0,
-          ),
-        )),
-        SizedBox(height: 5.0),
-        Container(
-            child: Text(
-          "Opened",
-          style: TextStyle(
-              color: Colors.black54,
-              fontSize: 18.0,
-              fontWeight: FontWeight.bold),
-        )),
-      ],
-    );
-
-
-
- }
-
-
-  }
-  
 
   Future<void> _gotoLocation(double lat, double long) async {
     final GoogleMapController controller = await _mapcontroller.future;
@@ -496,8 +505,6 @@ return Column(
       bearing: 45.0,
     )));
   }
-
-  
 
   String searchAddr;
   @override
@@ -530,40 +537,45 @@ return Column(
                             visible: true),
                       ],
                     ),
-                    markers: {
-                      Marker(
-                        markerId: MarkerId('place1'),
-                        position: widget.route,
-                        infoWindow: InfoWindow(title: 'place1'),
-                        icon: BitmapDescriptor.defaultMarkerWithHue(
-                          BitmapDescriptor.hueViolet,
-                        ),
-                      ),
-                      Marker(
-                        markerId: MarkerId('place2'),
-                        position: widget.route2,
-                        infoWindow: InfoWindow(title: 'Place2'),
-                        icon: BitmapDescriptor.defaultMarkerWithHue(
-                          BitmapDescriptor.hueViolet,
-                        ),
-                      ),
-                      Marker(
-                        markerId: MarkerId('place3'),
-                        position: widget.route3,
-                        infoWindow: InfoWindow(title: 'Place3'),
-                        icon: BitmapDescriptor.defaultMarkerWithHue(
-                          BitmapDescriptor.hueViolet,
-                        ),
-                      ),
-                      Marker(
-                        markerId: MarkerId('place4'),
-                        position: widget.route4,
-                        infoWindow: InfoWindow(title: 'Place4'),
-                        icon: BitmapDescriptor.defaultMarkerWithHue(
-                          BitmapDescriptor.hueViolet,
-                        ),
-                      ),
-                    },
+                     markers:_markers
+                    //{
+                    //   Marker(
+                    //     markerId: MarkerId('place1'),
+                    //     position: widget.route,
+                    //     infoWindow: InfoWindow(title: 'place1'),
+                    //     icon: BitmapDescriptor.defaultMarkerWithHue(
+                    //       BitmapDescriptor.hueViolet,
+                    //     ),
+                    //   ),
+                    //   Marker(
+                    //     markerId: MarkerId('place2'),
+                    //     position: widget.route2,
+                    //     infoWindow: InfoWindow(title: 'Place2'),
+                    //     icon: BitmapDescriptor.defaultMarkerWithHue(
+                    //       BitmapDescriptor.hueViolet,
+                    //     ),
+                    //   ),
+                    //   Marker(
+                    //     markerId: MarkerId('place3'),
+                    //     position: widget.route3,
+                    //     infoWindow: InfoWindow(title: 'Place3'),
+                    //     icon: BitmapDescriptor.defaultMarkerWithHue(
+                    //       BitmapDescriptor.hueViolet,
+                    //     ),
+                    //   ),
+                    //   Marker(
+                    //     markerId: MarkerId('place4'),
+                    //     position: widget.route4,
+                    //     infoWindow: InfoWindow(title: 'Place4'),
+                    //     icon: BitmapDescriptor.defaultMarkerWithHue(
+                    //       BitmapDescriptor.hueViolet,
+                    //     ),
+                    //   ),
+                     
+                      
+                      
+            
+                   // },
                   );
                 },
               ),

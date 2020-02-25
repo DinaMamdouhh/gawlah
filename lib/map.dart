@@ -16,7 +16,8 @@ class Myhi extends StatefulWidget {
       this.route1,
       this.route2,
       this.route3,
-      this.route4})
+      this.route4,
+      this.themes})
       : super(key: key);
 
   _MyAppState createState() => _MyAppState();
@@ -27,6 +28,7 @@ class Myhi extends StatefulWidget {
   final LatLng route2;
   final LatLng route3;
   final LatLng route4;
+  final List<int> themes;
 
   int getid() {
     return id;
@@ -116,6 +118,8 @@ class _MyAppState extends State<Myhi> {
   }
 
   Widget _buildContainer() {
+    // if(widget.themes=="Islamic"||widget.themes=="HI"||widget.themes=="Hello"){
+
     return Align(
       alignment: Alignment.bottomLeft,
       child: Container(
@@ -151,33 +155,41 @@ class _MyAppState extends State<Myhi> {
                   31.2625,
                   "Bayt Al-Suhaymi"),
             ),
+            SizedBox(width: 10.0),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: _boxes(
+                  "https://upload.wikimedia.org/wikipedia/commons/2/22/%D8%B3%D8%A7%D8%AD%D8%A9_%D8%A7%D9%84%D9%85%D8%AA%D8%AD%D9%81_%D8%A7%D9%84%D9%85%D8%B5%D8%B1%D9%8A.jpg",
+                  30.0480703,
+                  31.2337319,
+                  "The Egyptian Museum"),
+            ),
           ],
         ),
       ),
     );
+
+    // }
   }
 
   Widget _boxes(String _image, double lat, double long, String name) {
     return GestureDetector(
       onTap: () {
         _gotoLocation(lat, long);
-        LatLng newpoint=LatLng(lat,long);
+        LatLng newpoint = LatLng(lat, long);
         setState(() {
-      _markers.add(Marker(
-          // This marker id can be anything that uniquely identifies each marker.
-          markerId: MarkerId("place5"),
-          position: newpoint,
-          infoWindow: InfoWindow(
-            title: 'Really cool place',
-            snippet: '5 Star Rating',
-          ),
-          icon: BitmapDescriptor.defaultMarkerWithHue(
-                          BitmapDescriptor.hueViolet),
-          
-          
-          )
-          );
-    });
+          _markers.add(Marker(
+            // This marker id can be anything that uniquely identifies each marker.
+            markerId: MarkerId("place5"),
+            position: newpoint,
+            infoWindow: InfoWindow(
+              title: 'Really cool place',
+              snippet: '5 Star Rating',
+            ),
+            icon: BitmapDescriptor.defaultMarkerWithHue(
+                BitmapDescriptor.hueViolet),
+          ));
+        });
       },
       child: Container(
         child: new FittedBox(
@@ -491,9 +503,108 @@ class _MyAppState extends State<Myhi> {
                 fontSize: 18.0,
                 fontWeight: FontWeight.bold),
           )),
+
+        ],
+      );
+    }else if (name == "The Egyptian Museum") {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(left: 8.0),
+            child: Container(
+                child: Text(
+              name,
+              style: TextStyle(
+                  color: Color(0xff6200ee),
+                  fontSize: 24.0,
+                  fontWeight: FontWeight.bold),
+            )),
+          ),
+          SizedBox(height: 5.0),
+          Container(
+              child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Container(
+                  child: Text(
+                "4.9",
+                style: TextStyle(
+                  color: Colors.black54,
+                  fontSize: 18.0,
+                ),
+              )),
+              Container(
+                child: Icon(
+                  FontAwesomeIcons.solidStar,
+                  color: Colors.amber,
+                  size: 15.0,
+                ),
+              ),
+              Container(
+                child: Icon(
+                  FontAwesomeIcons.solidStar,
+                  color: Colors.amber,
+                  size: 15.0,
+                ),
+              ),
+              Container(
+                child: Icon(
+                  FontAwesomeIcons.solidStar,
+                  color: Colors.amber,
+                  size: 15.0,
+                ),
+              ),
+              Container(
+                child: Icon(
+                  FontAwesomeIcons.solidStar,
+                  color: Colors.amber,
+                  size: 15.0,
+                ),
+              ),
+              Container(
+                child: Icon(
+                  FontAwesomeIcons.solidStarHalf,
+                  color: Colors.amber,
+                  size: 15.0,
+                ),
+              ),
+              Container(
+                  child: Text(
+                "(972)",
+                style: TextStyle(
+                  color: Colors.black54,
+                  fontSize: 18.0,
+                ),
+              )),
+            ],
+          )),
+          SizedBox(height: 5.0),
+          Container(
+              child: Text(
+            "The Egyptian Museum",
+            style: TextStyle(
+              color: Colors.black54,
+              fontSize: 18.0,
+            ),
+          )),
+          SizedBox(height: 5.0),
+          Container(
+              child: Text(
+            "Opened",
+            style: TextStyle(
+                color: Colors.black54,
+                fontSize: 18.0,
+                fontWeight: FontWeight.bold),
+          )),
         ],
       );
     }
+
+
+
+
+
   }
 
   Future<void> _gotoLocation(double lat, double long) async {
@@ -518,65 +629,62 @@ class _MyAppState extends State<Myhi> {
                 stream: Firestore.instance.collection('tours').snapshots(),
                 builder: (context, AsyncSnapshot snapshot) {
                   return GoogleMap(
-                    myLocationEnabled: true,
-                    myLocationButtonEnabled: true,
-                    onMapCreated: _onMapCreated,
-                    initialCameraPosition: CameraPosition(
-                      target: widget.center,
-                      zoom: 40.0,
-                    ),
-                    polygons: Set<Polygon>.of(
-                      <Polygon>[
-                        Polygon(
-                            polygonId: PolygonId('area'),
-                            points: getPoints(),
-                            geodesic: true,
-                            strokeColor: Colors.red.withOpacity(0.6),
-                            strokeWidth: 2,
-                            fillColor: Colors.transparent.withOpacity(0.1),
-                            visible: true),
-                      ],
-                    ),
-                     markers:_markers
-                    //{
-                    //   Marker(
-                    //     markerId: MarkerId('place1'),
-                    //     position: widget.route,
-                    //     infoWindow: InfoWindow(title: 'place1'),
-                    //     icon: BitmapDescriptor.defaultMarkerWithHue(
-                    //       BitmapDescriptor.hueViolet,
-                    //     ),
-                    //   ),
-                    //   Marker(
-                    //     markerId: MarkerId('place2'),
-                    //     position: widget.route2,
-                    //     infoWindow: InfoWindow(title: 'Place2'),
-                    //     icon: BitmapDescriptor.defaultMarkerWithHue(
-                    //       BitmapDescriptor.hueViolet,
-                    //     ),
-                    //   ),
-                    //   Marker(
-                    //     markerId: MarkerId('place3'),
-                    //     position: widget.route3,
-                    //     infoWindow: InfoWindow(title: 'Place3'),
-                    //     icon: BitmapDescriptor.defaultMarkerWithHue(
-                    //       BitmapDescriptor.hueViolet,
-                    //     ),
-                    //   ),
-                    //   Marker(
-                    //     markerId: MarkerId('place4'),
-                    //     position: widget.route4,
-                    //     infoWindow: InfoWindow(title: 'Place4'),
-                    //     icon: BitmapDescriptor.defaultMarkerWithHue(
-                    //       BitmapDescriptor.hueViolet,
-                    //     ),
-                    //   ),
-                     
-                      
-                      
-            
-                   // },
-                  );
+                      myLocationEnabled: true,
+                      myLocationButtonEnabled: true,
+                      onMapCreated: _onMapCreated,
+                      initialCameraPosition: CameraPosition(
+                        target: widget.center,
+                        zoom: 40.0,
+                      ),
+                      polygons: Set<Polygon>.of(
+                        <Polygon>[
+                          Polygon(
+                              polygonId: PolygonId('area'),
+                              points: getPoints(),
+                              geodesic: true,
+                              strokeColor: Colors.red.withOpacity(0.6),
+                              strokeWidth: 2,
+                              fillColor: Colors.transparent.withOpacity(0.1),
+                              visible: true),
+                        ],
+                      ),
+                      markers: _markers
+                      //{
+                      //   Marker(
+                      //     markerId: MarkerId('place1'),
+                      //     position: widget.route,
+                      //     infoWindow: InfoWindow(title: 'place1'),
+                      //     icon: BitmapDescriptor.defaultMarkerWithHue(
+                      //       BitmapDescriptor.hueViolet,
+                      //     ),
+                      //   ),
+                      //   Marker(
+                      //     markerId: MarkerId('place2'),
+                      //     position: widget.route2,
+                      //     infoWindow: InfoWindow(title: 'Place2'),
+                      //     icon: BitmapDescriptor.defaultMarkerWithHue(
+                      //       BitmapDescriptor.hueViolet,
+                      //     ),
+                      //   ),
+                      //   Marker(
+                      //     markerId: MarkerId('place3'),
+                      //     position: widget.route3,
+                      //     infoWindow: InfoWindow(title: 'Place3'),
+                      //     icon: BitmapDescriptor.defaultMarkerWithHue(
+                      //       BitmapDescriptor.hueViolet,
+                      //     ),
+                      //   ),
+                      //   Marker(
+                      //     markerId: MarkerId('place4'),
+                      //     position: widget.route4,
+                      //     infoWindow: InfoWindow(title: 'Place4'),
+                      //     icon: BitmapDescriptor.defaultMarkerWithHue(
+                      //       BitmapDescriptor.hueViolet,
+                      //     ),
+                      //   ),
+
+                      // },
+                      );
                 },
               ),
               _buildContainer(),

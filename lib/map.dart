@@ -100,7 +100,7 @@ class _MyAppState extends State<Myhi> {
                     onMapCreated: _onMapCreated,
                     initialCameraPosition: CameraPosition(
                       target: widget.center,
-                      zoom: 40.0,
+                      zoom:40.0,
                       
                       
                     ),

@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'main.dart';
+import 'package:flutter_googlemaps/main.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'map.dart';
 import 'dart:developer';

@@ -160,9 +160,12 @@ class _MyAppState extends State<Myhi> {
                       ),
                       markers: _markers
                       ),
-                       Positioned(bottom: 25,
-                      child: SizedBox(height:200,
+                       Positioned(
+                      bottom: 55,
+                      child: SizedBox(
+                        height:200,
                       child: ListView.builder(
+                        shrinkWrap: true,
                         itemCount:5,
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (context,int currentindex){

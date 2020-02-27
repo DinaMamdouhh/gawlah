@@ -7,6 +7,7 @@ import 'package:location/location.dart' as LocationManager;
 import 'Tours_Pager.dart';
 import 'dart:async';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'place_info.dart';
 import 'map.dart';
 //import 'place_info.dart';
 
@@ -17,7 +18,11 @@ class PlaceCard extends StatelessWidget {
 
  @override
   Widget build(BuildContext context) {
-    return Card(
+    return GestureDetector(
+      onTap: (){
+        Navigator.push(context,  MaterialPageRoute(builder: (context) => Myinfo()));
+      },
+    child:Card(
         child: Column(
 crossAxisAlignment: CrossAxisAlignment.center,
   mainAxisSize: MainAxisSize.max,
@@ -36,6 +41,7 @@ crossAxisAlignment: CrossAxisAlignment.center,
           ),
         //),
       )
+    )
     ;
   }
 

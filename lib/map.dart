@@ -1,271 +1,335 @@
+import 'dart:async';
+import 'dart:io' show Platform;
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:location/location.dart' as LocationManager;
-import 'Tours_Pager.dart';
-import 'dart:async';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'places_card.dart';
+import 'package:flutter/services.dart';
 
-class Myhi extends StatefulWidget {
-  const Myhi(
-      {Key key,
-      this.id,
-      this.center,
-      this.route,
-      this.route1,
-      this.route2,
-      this.route3,
-      this.route4,
-      this.themes, tour})
+import 'place_card.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+
+class PlacePolylinePage extends StatelessWidget {
+  const PlacePolylinePage(
+      {Key key, this.height, this.width1, this.tour_id, this.centre})
       : super(key: key);
 
-  _MyAppState createState() => _MyAppState();
-   void location(){
-        _MyAppState().location();
-    }
-  final int id;
-  final LatLng center;
-  final LatLng route;
-  final LatLng route1;
-  final LatLng route2;
-  final LatLng route3;
-  final LatLng route4;
-  final List<int> themes;
+  final double height;
+  final double width1;
+  final int tour_id;
+  final GeoPoint centre;
 
-  int getid() {
-    return id;
-  }
-
-
-
-
-  // List<LatLng> getroute(){
-
-  //   return route;
-  // }
-
-}
-
-class _MyAppState extends State<Myhi> {
-  double B;
-  double A;
-
-
-void location(){
-_boxes( 30.052222, 31.2625);
-print("dinaaa");
-}
-  final Firestore database = Firestore.instance;
-  Stream tours;
-
-  Completer<GoogleMapController> _mapcontroller = Completer();
-  List<String> names = ['ali', 'ahmad', 'menna', 'mo3tasem', 'dina'];
-  List<String> images = [
-    'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Taj_Mahal_%28Edited%29.jpeg/800px-Taj_Mahal_%28Edited%29.jpeg',
-    'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Taj_Mahal_%28Edited%29.jpeg/800px-Taj_Mahal_%28Edited%29.jpeg',
-    'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Taj_Mahal_%28Edited%29.jpeg/800px-Taj_Mahal_%28Edited%29.jpeg',
-    'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Taj_Mahal_%28Edited%29.jpeg/800px-Taj_Mahal_%28Edited%29.jpeg',
-    'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Taj_Mahal_%28Edited%29.jpeg/800px-Taj_Mahal_%28Edited%29.jpeg'
-  ];
-
-  void queryDatabase({String themes = 'favourites'}) {
-    Query query =
-        database.collection('tours').where('themes', arrayContains: themes);
-    // Map the slides to the data payload
-    tours =
-        query.snapshots().map((list) => list.documents.map((doc) => doc.data));
-   
-    
-  }
-//  dina(bool active, int index, BuildContext context, AsyncSnapshot snap) {
-//    A=(snap.data.documents[index]['route00']);
-//     B=(snap.data.documents[index]['route01']);
-//     return _boxes(A, B);
-
-//   }
-  @override
-  void initState() {
-     queryDatabase();
-    super.initState();
-    //hena hankhaleeh yekhod el lat w el long mn el db bet3 el places 3ashan yersmohom 3al map
-        
-    _boxes(30.0500072,
-                  31.2607793);
-    _boxes(30.0457,31.2627);
-    _boxes(30.1457,31.2627);
-  }
-
-  _MyAppState({this.passedValue});
-  final String passedValue;
-
-  bool isLoading = false;
-  String errorMessage;
-//final Set<Polyline> polyline={};
-//List<LatLng>routecoords;
-//GoogleMapPolyline googleMapPolyline=new GoogleMapPolyline(apiKey: "AIzaSyBPDbF9SG2qPGN_nS57lSYhXmdnR-ksx04");
-
-  static const _intialPositionn = LatLng(29.9565261, 31.2703018);
-  LatLng _lastMapPosition = _intialPositionn;
-  final Set<Marker> _markers = {};
-
-  MapType _currentMapType = MapType.satellite;
-
-  void _onMapTypeButtonPressed() {
-    setState(() {
-      _currentMapType = _currentMapType == MapType.normal
-          ? MapType.satellite
-          : MapType.normal;
-    });
-  }
-
-  void _onAddMarkerButtonPressed() {
-    setState(() {
-      _markers.add(Marker(
-          // This marker id can be anything that uniquely identifies each marker.
-          markerId: MarkerId(_lastMapPosition.toString()),
-          position: _lastMapPosition,
-          infoWindow: InfoWindow(
-            title: 'Really cool place',
-            snippet: '5 Star Rating',
-          ),
-          icon: BitmapDescriptor.fromAsset('assets/emoji.png')));
-    });
-  }
-
-  void _onCameraMove(CameraPosition position) {
-    _lastMapPosition = position.target;
-  }
-
-  void _onMapCreated(controller) async {
-    setState(() {
-      _mapcontroller.complete(controller);
-
-      // _markers.add(Marker(
-      //   // This marker id can be anything that uniquely identifies each marker.
-      //   markerId: MarkerId(_lastMapPosition.toString()),
-      //   position: widget.center,
-      //   infoWindow: InfoWindow(
-      //     title: 'Kahert_El_Mouaz',
-      //     snippet: 'Here Starts Your Tour',
-      //   ),
-      //   icon: BitmapDescriptor.defaultMarker,
-      // ));
-    });
-  }
-
-  String searchAddr;
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: Scaffold(
-          body: Stack(
-            children: <Widget>[
-              StreamBuilder<Object>(
-                  stream: Firestore.instance.collection('tours').snapshots(),
-                  builder: (context, AsyncSnapshot snapshot) {
-                    return Stack(children: <Widget>[
-                      GoogleMap(
-                          myLocationEnabled: true,
-                          myLocationButtonEnabled: true,
-                          onMapCreated: _onMapCreated,
-                          initialCameraPosition: CameraPosition(
-                            target: widget.center,
-                            zoom: 40.0,
-                          ),
-                          polygons: Set<Polygon>.of(
-                            <Polygon>[
-                              Polygon(
-                                  polygonId: PolygonId('area'),
-                                  points: getPoints(),
-                                  geodesic: true,
-                                  strokeColor: Colors.red.withOpacity(0.6),
-                                  strokeWidth: 2,
-                                  fillColor:
-                                      Colors.transparent.withOpacity(0.1),
-                                  visible: true),
-                            ],
-                          ),
-                          markers: _markers),
-                      Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: <Widget>[
-                            SizedBox(
-                              
-                                height: 131,
-                                child: ListView.builder(
-                            
-                                    //shrinkWrap: true,
-                                    itemCount: 5,
-                                    scrollDirection: Axis.horizontal,
-                                    itemBuilder: (context, int currentindex) {
-                                      return  PlaceCard(
-                                          place_name: names[currentindex],
-                                          image: images[currentindex]);
-                                    }))
-                          ])
-                    ]);
-                  }),
-              // _buildContainer(),
-            ],
-          ),
-        ));
+    return PlacePolylineBody(
+      centre: centre,
+      tour_id: tour_id,
+    );
   }
+}
 
-  getPoints() {
-    return [
-      //widget.center,
-      widget.route,
-      widget.route1,
-      widget.route2,
-      widget.route3,
-      widget.route4,
-    ];
-  }
+class PlacePolylineBody extends StatefulWidget {
+  const PlacePolylineBody({
+    Key key,
+    this.tour_id,
+    this.centre,
+  }) : super(key: key);
 
+  final int tour_id;
+  final GeoPoint centre;
 
+  @override
+  State<StatefulWidget> createState() => PlacePolylineBodyState();
+}
 
- Widget _boxes(double lat, double long) {
-  // final Set<Marker> _markers = {};
-  
-        _gotoLocation(lat, long);
-        LatLng newpoint=LatLng(lat,long);
-     setState((){
-      _markers.add(Marker(
-          // This marker id can be anything that uniquely identifies each marker.
-          markerId: MarkerId("place5"),
-          position: newpoint,
-          infoWindow: InfoWindow(
-            title: 'Really cool place',
-            snippet: '5 Star Rating',
-          ),
-          icon: BitmapDescriptor.defaultMarkerWithHue(
-                          BitmapDescriptor.hueViolet),
-          
-          
-          )
-          );
+class PlacePolylineBodyState extends State<PlacePolylineBody>
+    with TickerProviderStateMixin {
+  String mapstyle;
+  PlacePolylineBodyState();
+
+  String activepolygon = 'a';
+  String activeTag = 'all';
+  GoogleMapController controller;
+  final Firestore database = Firestore.instance;
+
+  Stream Mapobjects;
+  Set<Polygon> polygons;
+  Set<Polyline> polylines;
+
+  final Set<Marker> _markers = {};
+  static const _intialPositionn1 = LatLng(30.041833166, 31.257332304);
+  static const _intialPositionn2 = LatLng(30.0554905, 31.2634282);
+  Completer<GoogleMapController> _controller = Completer();
+
+  void initState() {
+    Query query = database.collection('polylines');
+    Mapobjects = query
+        .where("tours", arrayContains: widget.tour_id)
+        .snapshots()
+        .map((list) => list.documents.map((doc) => doc.data));
+
+    polygons = new Set();
+    polylines = new Set();
+    rootBundle.loadString('images_and_icons/mapstyle.txt').then((string) {
+      mapstyle = string;
+    });
+
+    _boxes(30.041833166, 31.257332304);
+    _boxes(30.0554905, 31.2634282);
+    _boxes(30.052212451747547, 31.26263737678528);
+    _boxes(30.050559431652957, 31.262369155883786);
+    _boxes(30.053196821392653, 31.260963678359985);
+    _boxes(30.048163432201022, 31.263012886047363);
+    _boxes(30.051255932247386, 31.26746535301208);
+    _boxes(
+      30.049797918730953,
+      31.26807689666748,
+    );
+    _boxes(
+      30.05332683174633,
+      31.266725063323975,
+    );
+    _boxes(
+      30.06790548129843,
+      31.234130859374996,
+    );
+    _boxes(30.089295993825527, 31.246147155761722);
+    _boxes(
+      30.05691133569448,
+      31.262283325195312,
+    );
+    _boxes(
+      30.060300708403293,
+      31.26504063606262,
+    );
+    _boxes(
+      30.05422761307999,
+      31.261768341064457,
+    );
+    _boxes(
+      30.086325365908422,
+      31.328887939453125,
+    );
+    _boxes(30.05483122485245, 31.3330078125);
+    _boxes(30.013219833932094, 31.278076171875);
+    _boxes(29.950175057288813, 31.293869018554688);
+    _boxes(
+      29.957314210401563,
+      31.167526245117184,
+    );
+    _boxes(29.906734168105377, 31.21353149414062);
+    _boxes(30.0643399462443, 31.133880615234375);
+
    
-      });
 
-      }
+    super.initState();
+  }
 
-   Future<void> _gotoLocation(double lat, double long) async {
-    final GoogleMapController controller = await _mapcontroller.future;
+  void _onMapCreated(GoogleMapController controller) {
+    _controller.complete(controller);
+    controller.setMapStyle(mapstyle);
+  }
+
+  void dispose() {
+    super.dispose();
+  }
+
+  Future<void> gotoLocation(double lat, double long, double zoom) async {
+    final GoogleMapController controller = await _controller.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
       target: LatLng(lat, long),
-      zoom: 15,
-      tilt: 50.0,
-      bearing: 45.0,
+      zoom: zoom,
     )));
   }
 
+  void _queryDatabase({String tag = 'all'}) {
+    if (tag == 'all') {
+      Query query = database.collection('polylines');
+      Mapobjects = query
+          .where("tours", arrayContains: widget.tour_id)
+          .snapshots()
+          .map((list) => list.documents.map((doc) => doc.data));
+    } else {
+      Query query =
+          database.collection('polylines').where('building', isEqualTo: tag);
+      Mapobjects = query
+          .snapshots()
+          .map((list) => list.documents.map((doc) => doc.data));
+    }
+
+    setState(() {
+      activeTag = tag;
+    });
+  }
+
+  LatLng _createcentre(GeoPoint centre) {
+    return new LatLng(centre.latitude, centre.longitude);
+  }
+
+  Set<Polygon> polygons_set(List polys, Set<Polygon> Polygons) {
+    Polygons.clear();
+
+    polys.forEach((PolyObj) {
+      switch (PolyObj['type']) {
+        case 'place':
+          Polygons.add(Place(PolyObj['points'], PolyObj['name']));
+          break;
+
+        default:
+          break;
+      }
+    });
+
+    return Polygons;
+  }
+
+  Set<Polyline> polylines_set(List polyys, Set<Polyline> Polylines) {
+    Polylines.clear();
+
+    polyys.forEach((PolyObj) {
+      switch (PolyObj['type']) {
+        case 'route':
+          Polylines.add(Route(PolyObj['points'], PolyObj['name']));
+          break;
+
+        default:
+          break;
+      }
+    });
+
+    return Polylines;
+  }
+
+  Polygon Place(List<dynamic> polylinePoints, String idd) {
+    List<LatLng> latlngs = new List();
+    polylinePoints.forEach((point) {
+      latlngs.add(new LatLng(
+          (point as GeoPoint).latitude, (point as GeoPoint).longitude));
+    });
+
+    return new Polygon(
+      consumeTapEvents: false,
+      polygonId: PolygonId(idd),
+      fillColor: activepolygon == idd ? Colors.red : Colors.transparent,
+      strokeColor: Colors.black,
+      strokeWidth: 5,
+      visible: true,
+      points: latlngs,
+    );
+  }
+
+  Polyline Route(List<dynamic> polylinePoints, String idd) {
+    List<LatLng> latlngs = new List();
+    polylinePoints.forEach((point) {
+      latlngs.add(new LatLng(
+          (point as GeoPoint).latitude, (point as GeoPoint).longitude));
+    });
+
+    return new Polyline(
+      consumeTapEvents: false,
+      polylineId: PolylineId(idd),
+      color: Colors.greenAccent,
+      width: 3,
+      visible: true,
+      points: latlngs,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: StreamBuilder<Object>(
+          stream: Mapobjects,
+          builder: (context, AsyncSnapshot snapshot) {
+            List slideList = snapshot.data.toList();
+            return Stack(
+              children: <Widget>[
+                Center(
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height,
+                    child: GoogleMap(
+                      minMaxZoomPreference: MinMaxZoomPreference(14, 18),
+                      mapType: MapType.normal,
+                      initialCameraPosition: new CameraPosition(
+                          target: _createcentre(widget.centre), zoom: 15.5),
+                      polygons: polygons_set(slideList, polygons),
+                      polylines: polylines_set(slideList, polylines),
+                      onMapCreated: _onMapCreated,
+                      markers: _markers,
+                    ),
+                  ),
+                ),
+                Positioned(
+                    height: 250,
+                    width: MediaQuery.of(context).size.width,
+                    bottom: 0,
+                    child: PageView.builder(
+                        physics: BouncingScrollPhysics(),
+                        controller: PageController(
+                            viewportFraction: 0.59, initialPage: 0),
+                        onPageChanged: (int index) {
+                          setState(() {
+                            activepolygon = slideList[index]['name'];
+                            gotoLocation(
+                                ((slideList[index]['center']) as GeoPoint)
+                                    .latitude,
+                                ((slideList[index]['center']) as GeoPoint)
+                                    .longitude,
+                                18.0);
+                          });
+                        },
+                        itemCount: slideList.length,
+                        itemBuilder: (context, index) {
+                          {
+                            if (slideList[index]['type'] == 'place') {
+                              return PlaceCard(
+                                image: slideList[index]['image'],
+                                name: slideList[index]['name'],
+                                placetype: slideList[index]['placetype'],
+                                info: slideList[index]['info'],
+                                vid: slideList[index]['vid'],
+                              );
+                            }
+                          }
+                        })),
+              ],
+            );
+          }),
+    );
+  }
+
+  double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
+    var p = 0.017453292519943295;
+    var c = cos;
+    var a = 0.5 -
+        c((lat2 - lat1) * p) / 2 +
+        c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p)) / 2;
+    return 12742 * asin(sqrt(a));
+  }
+
+  Widget _boxes(double lat, double long) {
+    LatLng newpoint = LatLng(lat, long);
+    setState(() {
+      _markers.add(Marker(
+        // This marker id can be anything that uniquely identifies each marker.
+        markerId: MarkerId("NearByPlaces"),
+        position: newpoint,
+        infoWindow: InfoWindow(
+          title: 'NearByPlace',
+          snippet: '5 Star Rating',
+        ),
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet),
+      ));
+    });
 
 
+     double totalDistance = calculateDistance(
+        _intialPositionn1.latitude,
+        _intialPositionn1.longitude,
+        lat,
+        long);
 
-
+    print(totalDistance);
+  }
 }

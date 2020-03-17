@@ -1,133 +1,29 @@
-import 'dart:collection';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_googlemaps/main.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'map.dart';
-import 'dart:developer';
+import 'place_card.dart';
+import 'Tour_card.dart';
+class TourList2 extends StatefulWidget {
 
-class Tours_List extends StatefulWidget {
-  final GeoPoint route;
-  const Tours_List({Key key, this.route}) : super(key: key);
+  _TourListState2 createState() => _TourListState2();
 
-  createState() => TourListState();
 }
-
-class TourListState extends State<Tours_List> {
-  // This will give them 80% width which will allow other slides to appear on the side
-  final PageController controller = PageController(viewportFraction: .8);
+class _TourListState2 extends State<TourList2>{
+  final PageController controller = PageController(
+      viewportFraction: .8,
+      keepPage:true
+  );
   final Firestore database = Firestore.instance;
-  Stream tours;
-  Color Back;
+  //can be changed within the app
+  Color _BackGroundColor;
+  Stream slides;
   String activeTag = 'all';
   int currentPage = 0;
-  TourListState();
-
-  Container BuildThemesPage(BuildContext context, List themes) {
-    return Container(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Themes',
-            style: TextStyle(
-                color: Colors.black, fontSize: 40, fontWeight: FontWeight.bold),
-            textAlign: TextAlign.left,
-          ),
-          Container(
-            height: 10,
-          ),
-          Row(
-            children: <Widget>[
-              Container(
-                width: 16,
-              ),
-              Text(
-                'FILTER',
-                style: TextStyle(
-                    color: Colors.black26,
-                    fontSize: 20,
-                    fontWeight: FontWeight.normal),
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
-          _buildThemesButton(themes),
-        ],
-      ),
-    );
-  }
-
-  GestureDetector BuildTourPage(
-      bool active, int index, BuildContext context, AsyncSnapshot snap) {
-    // Animated properties
-    final double blur = active ? 50 : 0;
-    final double offset = active ? 20 : 0;
-    final double top = active ? 200 : 240;
-
-    return GestureDetector(
-      child: AnimatedContainer(
-        duration: Duration(milliseconds: 500),
-        curve: Curves.easeOutQuint,
-        margin: EdgeInsets.only(top: 150, bottom: 50, right: 10, left: 10),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(25),
-          image: DecorationImage(
-            fit: BoxFit.cover,
-            image: NetworkImage(snap.data.documents[index]['image']),
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black87,
-              blurRadius: blur,
-              offset: Offset(offset, offset),
-            ),
-          ],
-        ),
-        child: Column(
-          children: [
-            Container(
-              height: 100,
-            ),
-            Align(
-              alignment: Alignment.center,
-              child: Text(
-                snap.data.documents[index]['name'],
-                style: TextStyle(
-                    fontSize: 30,
-                    color: Colors.black,
-                    fontStyle: FontStyle.italic),
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ],
-        ),
-      ),
-      onTap: () {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => Myhi(
-                      id: snap.data.documents[index]['id'],
-                      center: LatLng(
-                          (snap.data.documents[index]['center'] as GeoPoint)
-                              .latitude,
-                          (snap.data.documents[index]['center'] as GeoPoint)
-                              .longitude),
-                      tour: snap.data.documents[index],
-                    )));
-      },
-    );
-  }
 
   @override
   void initState() {
-    Back = Color.fromRGBO(225, 186, 107, 1);
-    queryDatabase();
+    _BackGroundColor = Color.fromRGBO(38 , 47 , 62, 1);
+
+    _queryDatabase();
     controller.addListener(() {
       int next = controller.page.round();
       if (currentPage != next) {
@@ -138,89 +34,119 @@ class TourListState extends State<Tours_List> {
     });
     super.initState();
   }
-
-  void queryDatabase({String themes = 'favourites'}) {
-    Query query =
-        database.collection('tours').where('themes', arrayContains: themes);
+  void _queryDatabase({String tag = 'all'}) {
+    if (tag == 'all') {
+      Query query = database.collection('tours');
+      slides = query
+          .snapshots()
+          .map((list) => list.documents.map((doc) => doc.data));
+    } else {
+      Query query =
+      database.collection('tours').where('tags', arrayContains: tag);
+      slides = query
+          .snapshots()
+          .map((list) => list.documents.map((doc) => doc.data));
+    }
     // Map the slides to the data payload
-    tours =
-        query.snapshots().map((list) => list.documents.map((doc) => doc.data));
-    
+
+    // Update the active tag
     setState(() {
-      activeTag = themes;
+      activeTag = tag;
     });
   }
+  Container _buildThemesPage() {
+    return Container(
 
-  Widget _buildThemesButton(List themes) {
-    CollectionReference ref = database.collection('tours');
-
-    List<Widget> themes_list = new List<Widget>();
-    for (var i = 0; i < themes.length; i++) {
-      Color color = themes[i] == activeTag ? Colors.blue : Colors.transparent;
-      themes_list.add(FlatButton(
-          color: color,
-          child: SizedBox(
-            width: 200,
-            child: Text(
-              '#' + themes[i],
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                  fontStyle: FontStyle.italic),
-              textAlign: TextAlign.left,
-            ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Themes',
+            style: TextStyle(
+                fontSize: 40, fontWeight: FontWeight.bold, color: Colors.white),
           ),
-          onPressed: () {
-            queryDatabase(themes: themes[i]);
-            activeTag = themes[i];
-          }));
-    }
-    return new Column(
-        crossAxisAlignment: CrossAxisAlignment.start, children: themes_list);
-  }
-
-  Widget build(
-    BuildContext context,
-  ) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body: Stack(children: [
-          BuildBackground(),
-          StreamBuilder<QuerySnapshot>(
-              stream: tours,
-              builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                return PageView.builder(
-                    controller: controller,
-                    onPageChanged: _onPageViewChange,
-                    itemCount: snapshot.data.documents.length + 1,
-                    itemBuilder: (context, int currentIndex) {
-                      if (currentIndex == 0) {
-                        return BuildThemesPage(
-                            context, themes_getter(snapshot));
-                      } else if ((snapshot.data.documents.length + 1) >=
-                          currentIndex) {
-                        bool active = currentIndex == currentPage;
-                        return BuildTourPage(
-                            active, currentIndex - 1, context, snapshot);
-                      }
-                    });
-              })
-        ]),
+          Container(
+            height: 15,
+          ),
+          Row(
+            children: <Widget>[
+              Container(
+                width: 10,
+              ),
+              Text('FILTERS',
+                  style: TextStyle(color: Colors.white, fontSize: 20)),
+            ],
+          ),
+          Container(
+            height: 20,
+          ),
+          _buildButton('Art'),
+          _buildButton('War'),
+          _buildButton('Qurans'),
+          _buildButton('painting'),
+        ],
       ),
     );
   }
+  FlatButton _buildButton(tag) {
+    Color color = tag == activeTag ? Colors.blue : Colors.transparent;
+    return FlatButton(
+      color: color,
+      child: SizedBox(
+        width: 80,
+        child: Text(
+          '#$tag',
+          textAlign: TextAlign.left,
+          style: TextStyle(color: Colors.white),
+        ),
+      ),
+      onPressed: () => _queryDatabase(tag: tag),
+    );
+  }
 
-  Widget BuildBackground() {
-    return Scaffold(
-        body: Container(
-      color: Back,
+
+
+
+
+  Widget _buildStoryPage(Map data, bool active ,BuildContext context ) {
+    // Animated properties
+    final double blur = active ? 100: 30;
+    final double offset = active ? 10 : 0;
+    final double top = active ? 200 : 240;
+
+    return AnimatedContainer(
+        duration: Duration(milliseconds: 400),
+        curve: Curves.easeOutQuint,
+        margin: EdgeInsets.only(top: top, bottom: 100, right: 10, left: 10),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black87,
+              blurRadius: blur,
+              offset: Offset(offset, offset),
+            ),
+          ],
+        ),
+   
+        child:new TourCard(data),
+        
+      
+      );
+
+  }
+
+
+  Widget _buildbackground() {
+    return Container(
+      color: _BackGroundColor,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        mainAxisAlignment: MainAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Image.asset(
-            'assets/gawlah.png',
+            'images_and_icons/g_transparent.png',
             height: 100,
           ),
           Container(
@@ -228,23 +154,50 @@ class TourListState extends State<Tours_List> {
           )
         ],
       ),
-    ));
+    );
   }
 
-  List themes_getter(AsyncSnapshot snapshot) {
-    List themes = new List();
 
-    for (int i = 0; i < snapshot.data.documents.length; i++) {
-      List tags = snapshot.data.documents[i]['themes'];
 
-      tags.forEach((element) {
-        if (!(themes.contains(element))) {
-          themes.add(element);
-        }
-      });
-    }
-    return themes;
+
+
+
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        primary: true,
+        body: Center(
+          child: Stack(children: [
+            _buildbackground(),
+            StreamBuilder(
+              stream: slides,
+              initialData: [],
+              builder: (context, AsyncSnapshot snap) {
+                List slideList = snap.data.toList();
+                return PageView.builder(
+                  controller: controller,
+
+                  itemCount: slideList.length+1 ,
+                  itemBuilder: (context, int currentIndex) {
+                    if (currentIndex == 0) {
+                      return _buildThemesPage();
+                    } else if (slideList.length >= currentIndex) {
+                      bool active = currentIndex == currentPage;
+                      return _buildStoryPage(slideList[currentIndex-1], active,context,);
+                    }
+
+                  },
+                );
+              },
+            )
+          ]),
+        ));
   }
 
-  void _onPageViewChange(int page) {}
+
+
+
 }
+

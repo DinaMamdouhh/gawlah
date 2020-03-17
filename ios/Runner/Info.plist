@@ -2,10 +2,15 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-<key>io.flutter.embedded_views_preview</key>
-<string>YES</string>
+
+
+
+
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>Using location to display on a map</string>
+
 	<key>CFBundleDevelopmentRegion</key>
-	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<string>en</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -13,7 +18,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>flutter_googlemaps</string>
+	<string>flutter_gawlah</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -43,22 +48,8 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
- <key>io.flutter.embedded_viewa_perview</key>
- <value>YES</value>
-
- <key>NSLocationWhenInUsageDescription</key>
- <value>So I can track you while you use the app</value>
-
- <key>NSLocationWhenInUsageDescription</key>
- <value>So I can track you at all times</value>
- 
-
-
-
-
-
-
-
-
+	
+	<key>io.flutter.embedded_views_preview</key>
+    <string>YES</string>
 </dict>
 </plist>

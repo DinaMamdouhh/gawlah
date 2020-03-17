@@ -1,6 +1,6 @@
-@import UIKit;
-@import Flutter;
+#import <Flutter/Flutter.h>
+#import <UIKit/UIKit.h>
 
-@interface AppDelegate : FlutterAppDelegate // More on the FlutterAppDelegate below.
-@property (nonatomic,strong) FlutterEngine *flutterEngine;
+@interface AppDelegate : FlutterAppDelegate
+
 @end
